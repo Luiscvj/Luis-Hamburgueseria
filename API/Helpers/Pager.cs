@@ -1,59 +1,43 @@
-
 namespace API.Helpers;
 
-public class Pager<T> where T : class
-{
-    public string Search { get;  set; }
-    public int PageIndex { get;  set; }
-    public int PageSize { get;  set; }
-    public int Total { get;  set; }
-    public List<T> Registers { get; private set; }
-
-    public Pager()
+    public class Pager <T> where T : class
     {
-    }
-    
-    public Pager(List<T> registers, int total, int pageIndex,
-        int pageSize, string search)
-    {
-        Registers = registers;
-        Total = total;
-        PageIndex = pageIndex;
-        PageSize = pageSize;
-        Search = search;
-    }
+        public string Search { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int Total { get; set; }
+        public IEnumerable<T> Registers { get; private set; }
 
-
-    public int TotalPages
-    {
-        get
+        public Pager (IEnumerable<T> registers, string search, int total, int pageIndex, int pageSize)
         {
-            return (int)Math.Ceiling(Total / (double)PageSize);
+            Registers = registers;
+            Search = search;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            Total = total;
         }
-        set{
-            this.TotalPages = value;
-        }
-    }
 
-    public bool HasPreviousPage
-    {
-        get
+        public int TotalPages
         {
-            return (PageIndex > 1);
+            get
+            {
+                return (int)Math.Ceiling(Total / (double)PageSize);
+            }
         }
-        set{
-            this.HasPreviousPage = value;
-        }
-    }
 
-    public bool HasNextPage
-    {
-        get
+        public bool HasPreviousPage
         {
-            return (PageIndex < TotalPages);
+            get
+            {
+                return (PageIndex > 1);
+            }
         }
-        set{
-            this.HasNextPage = value;
+
+        public bool HasNextPage
+        {
+            get
+            {
+                return (PageIndex < TotalPages);
+            }
         }
     }
-}

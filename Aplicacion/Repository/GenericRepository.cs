@@ -10,9 +10,9 @@ namespace Aplicacion.Repository;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
-    private readonly DbAppContext _context;
+    private readonly HamburgueseriaContext _context;
 
-    public GenericRepository(DbAppContext context)
+    public GenericRepository(HamburgueseriaContext context)
     {
         _context = context;
     }
@@ -43,10 +43,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public virtual async Task<T> GetByIdAsync(string id)
-    {
-       return await _context.Set<T>().FindAsync(id);
-    }
+  
 
     public virtual void Remove(T entity)
     {
@@ -60,8 +57,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public virtual void Update(T entity)
     {
-        _context.Set<T>()
-            .Update(entity);
+        _context.Set<T>().Update(entity);
     }
     public virtual async Task<(int totalRegistros, IEnumerable<T> registros)> GetAllAsync(int pageIndex, int pageSize, string _search)
     {

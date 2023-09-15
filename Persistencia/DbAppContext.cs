@@ -1,26 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Dominio.Entities;
+using Infrastructure.Seeding;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistencia
+public class HamburgueseriaContext : DbContext
 {
-    public class DbAppContext : DbContext
+    public HamburgueseriaContext(DbContextOptions<HamburgueseriaContext> options) : base(options)
     {
-        public DbAppContext(DbContextOptions options) : base(options)
-        {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+    }
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-         public DbSet<Rol> Roles { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<UsuarioRoles> UsuariosRoles { get; set; }
+    protected override void ConfigureConventions(ModelConfigurationBuilder modelBuilder)
+    {
+        modelBuilder.Properties<string>().HaveMaxLength(100);
+        
+    }
+
+    public DbSet<Hamburguesa_Ingrediente> Hamburguesa_Ingredientes { get; set; }
+    public DbSet<Hamburguesa> Hamburguesas { get; set; }
+    public DbSet<Chef> Chefs { get; set; }
+    public DbSet<Ingrediente> Ingredientes { get; set; }
+    public DbSet<Categoria> Categorias { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        SeedingInitial.Seed(modelBuilder);
+
     }
 }

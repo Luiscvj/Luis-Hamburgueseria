@@ -1,9 +1,12 @@
+using System.Reflection;
 using API.Extensions;
 using API.Helpers;
-using API.Helpers.Errors;
+using AspNetCoreRateLimit;
+
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Persistencia;
+
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,23 +30,18 @@ builder.Services.AddControllers(options =>
 	options.ReturnHttpNotAcceptable = true;
 }).AddXmlSerializerFormatters();
 
-builder.Services.AddValidationErrors();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.ConfigureCors();
+builder.Services.AddAuthorization();
+builder.Services.ConfigureRateLimiting();
+builder.Services.ConfigureApiVersioning();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddJwt(builder.Configuration);
-
-builder.Services.AddAuthorization(opts =>{
-    opts.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .AddRequirements(new GlobalVerbRoleRequirement())
-        .Build();
-});
-builder.Services.AddAplicacionServices();
-builder.Services.AddDbContext<DbAppContext>(options =>
+builder.Services.AddApplicationServices();
+builder.Services.AddDbContext<HamburgueseriaContext>(options =>
 {
     string connectionString = builder.Configuration.GetConnectionString("ConexMysql");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -51,7 +49,7 @@ builder.Services.AddDbContext<DbAppContext>(options =>
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionMiddleware>();
+
 
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
@@ -67,7 +65,7 @@ using (var scope = app.Services.CreateScope())
     var loggerFactory = services.GetRequiredService<ILoggerFactory>();
     try
     {
-        var context = services.GetRequiredService<DbAppContext>();
+        var context = services.GetRequiredService<HamburgueseriaContext>();
         await context.Database.MigrateAsync();
     }
     catch (Exception ex)
@@ -81,7 +79,8 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseIpRateLimiting();
 app.MapControllers();
 
 app.Run();
+
