@@ -121,8 +121,7 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("GetAllChefPaginacion")]
-        
+        [HttpGet("GetAllChefPaginacion")]      
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 

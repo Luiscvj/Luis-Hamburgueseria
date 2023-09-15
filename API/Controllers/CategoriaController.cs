@@ -44,8 +44,7 @@ namespace API.Controllers
 
 
 
-        [HttpPost("Range")]
-       
+        [HttpPost("Range")]       
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -122,6 +121,7 @@ namespace API.Controllers
 
 
         [HttpGet("GetAllCategoriaPaginacion")]
+        [MapToApiVersion("1.1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 

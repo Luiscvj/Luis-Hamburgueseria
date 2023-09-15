@@ -61,4 +61,11 @@ public class HamburguesaRepository : GenericRepository<Hamburguesa>, IHamburgues
                                 .ToListAsync();
         return ( totalRegistros, registros);
      }
+
+    public Task<IEnumerable<Hamburguesa>> GetHambirguesasSinQuesoCheddar()
+    {
+        throw new NotImplementedException();
+    }
 }
+
+    

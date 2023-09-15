@@ -9,5 +9,7 @@ public interface IHamburguesa : IGenericRepository<Hamburguesa>
     Task<IEnumerable<Hamburguesa>> GetHamburguesaAscendingByPrice();
     Task<IEnumerable<Ingrediente>> GetHamburgesasPanIntegral();
 
+    Task<IEnumerable<Hamburguesa>> GetHambirguesasSinQuesoCheddar();
+
     
 }

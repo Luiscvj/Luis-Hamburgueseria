@@ -45,8 +45,7 @@ namespace API.Controllers
 
 
 
-        [HttpPost("Range")]
-       
+        [HttpPost("Range")]   
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
