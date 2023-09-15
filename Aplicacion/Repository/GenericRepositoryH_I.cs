@@ -35,7 +35,7 @@ public class GenericRepositoryH_I : IGenericRepositoryH_I<Hamburguesa_Ingredient
         return await _context.Set<Hamburguesa_Ingrediente>().ToListAsync();
     }
 
-    public virtual async Task<(int totalRegistros, IEnumerable<Hamburguesa_Ingrediente> registros)> GetAllAsync(int pageIndex, int pageSize, string search)
+    public virtual async Task<(int totalRegistros, IEnumerable<Hamburguesa_Ingrediente> registros)> GetAllAsync(int pageIndex, int pageSize)
     {
          var totalRegistros = await _context.Set<Hamburguesa_Ingrediente>().CountAsync();
         var registros = await _context.Set<Hamburguesa_Ingrediente>()

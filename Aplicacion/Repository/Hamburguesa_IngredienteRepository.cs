@@ -35,7 +35,7 @@ public class Hamburguesa_IngredienteRepository : GenericRepositoryH_I,IHamburgue
 
 
 
-       public override async Task<(int totalRegistros,IEnumerable<Hamburguesa_Ingrediente> registros)> GetAllAsync(int pageIndex,int pageSize,string search)
+       public  async Task<(int totalRegistros,IEnumerable<Hamburguesa_Ingrediente> registros)> GetAllAsync(int pageIndex,int pageSize)
      {
         var query = _context.Hamburguesa_Ingredientes as IQueryable<Hamburguesa_Ingrediente>;
       

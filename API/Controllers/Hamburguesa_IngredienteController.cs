@@ -1,4 +1,5 @@
 using API.Dtos.Hamburguesa_IngredienteDto;
+using API.Helpers;
 using AutoMapper;
 using Dominio.Entities;
 using Dominio.Interfaces;
@@ -107,6 +108,7 @@ namespace API.Controllers
 
         }
 
+        
         [HttpGet("GetAll")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -122,6 +124,19 @@ namespace API.Controllers
 
         }
         
+
+        [HttpGet("GetAllHamburguesaPaginacion")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<ActionResult<Pager<Hamburguesa_IngredienteDto>>> GetHamburguesaPaginacion([FromQuery] Params hamb_ingParams)
+        {
+            var Hamburguesa = await _unitOfWork.Hamburguesa_Ingredientes.GetAllAsync(hamb_ingParams.PageIndex,hamb_ingParams.PageSize);
+            var listHamburguesa_IngredientesDto=_mapper.Map<List<Hamburguesa_IngredienteDto>>(Hamburguesa.registros);
+
+            return new Pager<Hamburguesa_IngredienteDto>(listHamburguesa_IngredientesDto, hamb_ingParams.Search, Hamburguesa.totalRegistros, hamb_ingParams.PageIndex, hamb_ingParams.PageSize);
+
+        }
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
